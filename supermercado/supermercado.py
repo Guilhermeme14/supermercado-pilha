@@ -129,7 +129,7 @@ class Supermercado:
 
 # Função para exibir o menu
 def exibir_menu():
-    print("\n--- Menu do Supermercado ---")
+    print("\n--- Menu do supermercado ---")
     print("1. Registrar nova compra")
     print("2. Consultar histórico de compras de um produto")
     print("3. Consultar histórico completo de compras")
