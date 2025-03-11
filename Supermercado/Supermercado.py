@@ -1,3 +1,5 @@
+from datetime import datetime  # Para manipulação de datas
+
 class Compra:
     def __init__(self, data, produto, valor_compra, valor_venda, quantidade_comprada, quantidade_estoque):
         self.data = data
@@ -20,11 +22,11 @@ class PilhaDeCompras:
         self.compras = []
 
     def adicionar_compra(self, compra):
-        self.compras.append(compra)  # Adiciona no final da lista (topo da pilha)
+        self.compras.append(compra)
 
     def obter_ultima_compra(self):
         if self.compras:
-            return self.compras[-1]  # Retorna o último elemento (topo da pilha)
+            return self.compras[-1]
         return None
 
     def limpar_registros(self):
@@ -32,12 +34,28 @@ class PilhaDeCompras:
         print(f"Registros de compras foram limpos.")
 
     def listar_compras_lifo(self):
-        # Retorna as compras em ordem LIFO (do último ao primeiro)
         return reversed(self.compras)
 
 class Supermercado:
     def __init__(self):
         self.produtos = {}
+
+    def validar_data(self, data_str):
+        try:
+            data = datetime.strptime(data_str, "%Y-%m-%d")  # Converte a string para data
+            if data.year > 2025:
+                print("Ano inválido. O ano não pode ser maior que 2025.")
+                return False
+            if data.month > 12 or data.month < 1:
+                print("Mês inválido. O mês deve estar entre 1 e 12.")
+                return False
+            if data.day > 31 or data.day < 1:
+                print("Dia inválido. O dia deve estar entre 1 e 31.")
+                return False
+            return True
+        except ValueError:
+            print("Formato de data inválido. Use o formato AAAA-MM-DD.")
+            return False
 
     def registrar_compra(self, data, produto, valor_compra, valor_venda, quantidade_comprada):
         if produto not in self.produtos:
@@ -46,20 +64,18 @@ class Supermercado:
         pilha_de_compras = self.produtos[produto]
         ultima_compra = pilha_de_compras.obter_ultima_compra()
 
-        # Define a quantidade em estoque
         quantidade_estoque = quantidade_comprada if not ultima_compra else ultima_compra.quantidade_estoque + quantidade_comprada
 
-        # Cria uma nova compra
         nova_compra = Compra(data, produto, valor_compra, valor_venda, quantidade_comprada, quantidade_estoque)
         pilha_de_compras.adicionar_compra(nova_compra)
-        print(f"Compra registrada com sucesso: \n{nova_compra}")
+        print(f"\n Compra registrada com sucesso: \n{nova_compra}")
 
     def consultar_historico_compras(self, produto):
         if produto in self.produtos:
             pilha_de_compras = self.produtos[produto]
             if pilha_de_compras.compras:
                 print(f"Histórico de compras para '{produto}' (ordem LIFO):")
-                for compra in pilha_de_compras.listar_compras_lifo():  # Exibe em ordem LIFO
+                for compra in pilha_de_compras.listar_compras_lifo():
                     print(compra)
             else:
                 print(f"Nenhuma compra registrada para o produto '{produto}'.")
@@ -71,11 +87,10 @@ class Supermercado:
             print("Nenhum produto registrado no sistema.")
             return
 
-        print("\n--- Histórico Completo de Compras (ordem LIFO) ---")
+        print("\n--- Histórico Completo de Compras --- ")
         for produto, pilha_de_compras in self.produtos.items():
-            print(f"\nProduto: {produto}")
             if pilha_de_compras.compras:
-                for compra in pilha_de_compras.listar_compras_lifo():  # Exibe em ordem LIFO
+                for compra in pilha_de_compras.listar_compras_lifo():
                     print(compra)
             else:
                 print("Nenhuma compra registrada para este produto.")
@@ -109,7 +124,13 @@ def main():
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
-            data = input("Digite a data da compra (ex: 2023-10-01): ")
+            while True:
+                data = input("Digite a data da compra (formato AAAA-MM-DD): ")
+                if supermercado.validar_data(data):
+                    break  # Sai do loop se a data for válida
+                else:
+                    print("Por favor, insira uma data válida.")
+
             produto = input("Digite o nome do produto: ")
             valor_compra = float(input("Digite o valor de compra do produto: "))
             valor_venda = float(input("Digite o valor de venda do produto: "))
