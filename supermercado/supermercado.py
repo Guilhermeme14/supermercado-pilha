@@ -21,11 +21,11 @@ class PilhaDeCompras:
         self.compras = []
 
     def adicionar_compra(self, compra):
-        self.compras.append(compra)
+        self.compras.append(compra)  # Adiciona no final da lista (topo da pilha)
 
     def obter_ultima_compra(self):
         if self.compras:
-            return self.compras[-1]
+            return self.compras[-1]  # Retorna o último elemento (topo da pilha)
         return None
 
     def limpar_registros(self):
@@ -33,7 +33,7 @@ class PilhaDeCompras:
         print(f"Registros de compras foram limpos.")
 
     def listar_compras_lifo(self):
-        return reversed(self.compras)
+        return reversed(self.compras)  # Retorna as compras em ordem LIFO
 
 class Supermercado:
     def __init__(self):
@@ -64,7 +64,7 @@ class Supermercado:
         ultima_compra = pilha_de_compras.obter_ultima_compra()
 
         # Define o valor de venda como o valor da última compra (se existir)
-        valor_venda = ultima_compra.valor_compra if ultima_compra else valor_compra
+        valor_venda = valor_compra  # O valor de venda é o valor da compra atual
 
         # Define a quantidade em estoque
         quantidade_estoque = quantidade_comprada if not ultima_compra else ultima_compra.quantidade_estoque + quantidade_comprada
@@ -129,11 +129,11 @@ class Supermercado:
 
 # Função para exibir o menu
 def exibir_menu():
-    print("\n--- Menu do supermercado ---")
+    print("\n--- Menu do Supermercado ---")
     print("1. Registrar nova compra")
     print("2. Consultar histórico de compras de um produto")
     print("3. Consultar histórico completo de compras")
-    print("4. Consultar estoque de produtos") 
+    print("4. Consultar estoque de produtos")
     print("5. Limpar registro de um produto")
     print("6. Limpar todos os registros")
     print("7. Sair")
@@ -166,7 +166,7 @@ def main():
         elif opcao == "3":
             supermercado.consultar_historico_completo()
 
-        elif opcao == "4":  # Nova opção
+        elif opcao == "4":
             supermercado.consultar_estoque()
 
         elif opcao == "5":
