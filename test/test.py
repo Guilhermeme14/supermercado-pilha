@@ -1,5 +1,5 @@
 import unittest
-from supermercado.supermercado import Compra, PilhaDeCompras, Supermercado  # Substitua 'supermercado' pelo nome correto do seu arquivo
+from supermercado.supermercado import Compra, PilhaDeCompras, Supermercado
 
 
 class TestCompra(unittest.TestCase):
