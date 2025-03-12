@@ -74,6 +74,24 @@ class Supermercado:
         pilha_de_compras.adicionar_compra(nova_compra)
         print(f"Compra registrada com sucesso: \n{nova_compra}")
 
+    def realizar_venda(self, produto, quantidade_vendida):
+        if produto in self.produtos:
+            pilha_de_compras = self.produtos[produto]
+            ultima_compra = pilha_de_compras.obter_ultima_compra()
+
+            if ultima_compra:
+                if quantidade_vendida <= ultima_compra.quantidade_estoque:
+                    # Atualiza a quantidade em estoque
+                    ultima_compra.quantidade_estoque -= quantidade_vendida
+                    print(f"Venda realizada com sucesso! Quantidade vendida: {quantidade_vendida}")
+                    print(f"Novo estoque de '{produto}': {ultima_compra.quantidade_estoque}")
+                else:
+                    print(f"Estoque insuficiente. Quantidade em estoque: {ultima_compra.quantidade_estoque}")
+            else:
+                print(f"Nenhuma compra registrada para o produto '{produto}'.")
+        else:
+            print(f"Produto '{produto}' não encontrado.")
+
     def consultar_historico_compras(self, produto):
         if produto in self.produtos:
             pilha_de_compras = self.produtos[produto]
@@ -134,9 +152,10 @@ def exibir_menu():
     print("2. Consultar histórico de compras de um produto")
     print("3. Consultar histórico completo de compras")
     print("4. Consultar estoque de produtos")
-    print("5. Limpar registro de um produto")
-    print("6. Limpar todos os registros")
-    print("7. Sair")
+    print("5. Realizar venda de um produto")  # Nova opção
+    print("6. Limpar registro de um produto")
+    print("7. Limpar todos os registros")
+    print("8. Sair")
 
 # Programa principal
 def main():
@@ -169,16 +188,21 @@ def main():
         elif opcao == "4":
             supermercado.consultar_estoque()
 
-        elif opcao == "5":
+        elif opcao == "5":  # Nova opção
+            produto = input("Digite o nome do produto para realizar a venda: ")
+            quantidade_vendida = int(input("Digite a quantidade vendida: "))
+            supermercado.realizar_venda(produto, quantidade_vendida)
+
+        elif opcao == "6":
             produto = input("Digite o nome do produto para limpar o registro: ")
             supermercado.limpar_registro_produto(produto)
 
-        elif opcao == "6":
+        elif opcao == "7":
             confirmacao = input("Tem certeza que deseja limpar todos os registros? (s/n): ")
             if confirmacao.lower() == "s":
                 supermercado.limpar_todos_registros()
 
-        elif opcao == "7":
+        elif opcao == "8":
             print("Saindo do programa...")
             break
 
