@@ -1,195 +1,157 @@
-# Documentação do Sistema de Gerenciamento de Supermercado
+# Documentação do Sistema de Controle de Compras e Estoque para Supermercado
+
 ## 1. Introdução
-Este sistema foi desenvolvido em Python para gerenciar o registro e histórico de compras de produtos em um supermercado. Ele permite que os usuários registrem compras, consultem históricos, limpem registros e gerenciem estoques de forma organizada.
 
-O sistema segue a estrutura de Pilha (LIFO - Last In, First Out) para armazenar as compras de cada produto, garantindo que a última compra realizada seja a primeira a ser consultada.
+Este sistema tem como objetivo gerenciar as compras e vendas de produtos em um supermercado, utilizando uma estrutura de pilha (LIFO) para armazenar as compras de cada produto. Ele permite registrar compras, realizar vendas, consultar histórico de compras e estoque, além de limpar registros de produtos.
+
 ## 2. Estrutura do Código
-O código está dividido nas seguintes classes e funções:
-### 2.1 Classe Compra
-Representa uma compra de um produto.
 
-#### Atributos:
+O código é organizado em três classes principais:
 
-• data: Data da compra (formato “AAAA-MM-DD”).
+1. Compra: Representa uma compra de um determinado produto.
 
-• produto: Nome do produto comprado.
+2. PilhaDeCompras: Gerencia a pilha de compras de um produto específico.
 
-• valor_compra: Preço de compra do produto.
+3. Supermercado: Administra os produtos, compras, vendas e consultas do sistema.
 
-• valor_venda: Preço de venda do produto.
+Além disso, há um menu interativo para o usuário interagir com o sistema.
 
-• quantidade_comprada: Quantidade adquirida na compra.
+## 3. Classes e Métodos
 
-• quantidade_estoque: Quantidade total disponível após a compra.
+### 3.1 Classe Compra
 
-#### Métodos:
+Representa uma compra realizada no supermercado.
 
-• __str__(): Retorna uma representação textual dos detalhes da compra.
+#### Atributos
 
-### 2.2 Classe PilhaDeCompras
-Gerencia a pilha de compras para um produto específico.
+• data (str): Data da compra.
 
-#### Atributos:
+• produto (str): Nome do produto adquirido.
 
-• compras: Lista contendo todas as compras registradas do produto.
+• valor_compra (float): Preço pago por unidade do produto.
 
-#### Métodos:
+• valor_venda (float): Preço de venda do produto (atualmente igual ao preço de compra).
 
-• adicionar_compra(compra): Adiciona uma nova compra à pilha.
+• quantidade_comprada (int): Quantidade adquirida do produto.
 
-• obter_ultima_compra(): Retorna a última compra registrada (mais recente).
+• quantidade_estoque (int): Quantidade disponível em estoque após a compra.
 
-• limpar_registros(): Remove todas as compras registradas da pilha.
+#### Métodos
 
-• listar_compras_lifo(): Retorna as compras na ordem LIFO.
+• __str__(): Retorna uma string formatada com as informações da compra.
 
-### 2.3 Classe Supermercado
 
-Gerencia o controle de compras de diferentes produtos.
+### 3.2 Classe PilhaDeCompras
 
-#### Atributos:
 
-• produtos: Dicionário onde as chaves são os nomes dos produtos e os valores são instâncias de PilhaDeCompras.
-Métodos:
+Gerencia uma pilha de compras de um determinado produto (LIFO - Último a Entrar, Primeiro a Sair).
 
-• validar_data(data_str): Verifica se a data informada está no formato correto e dentro de um intervalo aceitável.
 
-• registrar_compra(data, produto, valor_compra, valor_venda, quantidade_comprada): Registra uma nova compra para um produto.
+#### Atributos
 
-• consultar_historico_compras(produto): Exibe o histórico de compras de um produto específico (ordem LIFO).
+• compras (list): Lista de objetos Compra, representando o histórico de compras.
 
-• consultar_historico_completo(): Exibe o histórico completo de compras de todos os produtos.
 
-• limpar_registro_produto(produto): Remove todas as compras registradas para um determinado produto.
+#### Métodos
 
-• limpar_todos_registros(): Remove todas as compras registradas no sistema.
+• adicionar_compra(compra): Adiciona uma nova compra ao topo da pilha.
 
-### 2.4 Funções auxiliares
+• obter_ultima_compra(): Retorna a última compra realizada (topo da pilha).
 
-#### exibir_menu()
+• limpar_registros(): Remove todas as compras do produto.
 
-Exibe as opções disponíveis para o usuário no menu do sistema.
+• listar_compras_lifo(): Retorna a lista de compras em ordem LIFO (última compra primeiro).
 
-#### main()
 
-Função principal que executa o sistema, gerencia a interação do usuário e processa as opções selecionadas no menu.
+### 3.3 Classe Supermercado
 
-## 3. Funcionamento do Sistema
 
-### 3.1 Execução do Programa
+Gerencia o controle de compras, vendas e estoque.
 
-O programa inicia com a chamada da função main(), que exibe um menu com as seguintes opções:
+
+## Atributos
+
+• produtos (dict): Dicionário onde a chave é o nome do produto e o valor é um objeto PilhaDeCompras.
+
+
+## Métodos
+
+• validar_data(data_str): Verifica se a data inserida pelo usuário está no formato correto (AAAA-MM-DD) e dentro do ano permitido (até 2025).
+
+• registrar_compra(data, produto, valor_compra, quantidade_comprada): Registra uma nova compra e atualiza o estoque do produto.
+
+• realizar_venda(produto, quantidade_vendida): Processa a venda de um produto, reduzindo a quantidade em estoque.
+
+• consultar_historico_compras(produto): Exibe o histórico de compras de um produto específico.
+
+• consultar_historico_completo(): Exibe o histórico de compras de todos os produtos.
+
+• consultar_estoque(): Exibe a quantidade disponível em estoque para cada produto.
+
+• limpar_registro_produto(produto): Apaga o histórico de compras de um único produto.
+
+• limpar_todos_registros(): Remove todos os registros de compras do sistema.
+
+
+# 4. Interface do Usuário (Menu)
+
+
+O sistema apresenta um menu interativo, permitindo que o usuário escolha entre diversas opções:
 
 1. Registrar nova compra
-   
-• Solicita a data da compra, nome do produto, valor de compra, valor de venda e quantidade adquirida.
 
-• Valida a data e registra a compra no sistema.
+2. Consultar histórico de compras de um produto
 
-4. Consultar histórico de compras de um produto
-   
-• Solicita o nome do produto e exibe as compras registradas na ordem LIFO.
+3. Consultar histórico completo de compras
 
-7. Consultar histórico completo de compras
-   
-• Exibe todas as compras registradas no sistema.
+4. Consultar estoque de produtos
 
-10. Limpar registro de um produto
-    
-• Remove todas as compras de um produto específico.
+5. Realizar venda de um produto
 
-13. Limpar todos os registros
-    
-• Remove todas as compras registradas no sistema.
-15. Sair
+6. Limpar registro de um produto
 
-• Finaliza o programa.
+7. Limpar todos os registros
 
-### 3.2 Fluxo de Operações
+8. Sair
 
-1. O usuário escolhe uma opção no menu.
-   
-3. O sistema solicita os dados necessários (se aplicável).
-   
-5. A operação é executada e um feedback é exibido ao usuário.
-   
-7. O menu é mostrado novamente até que o usuário escolha sair.
-   
-4. Regras e Restrições
-   
-• O sistema utiliza Pilha (LIFO) para armazenar as compras de cada produto.
-• A data deve ser válida e seguir o formato AAAA-MM-DD.
-• O valor de compra, valor de venda e quantidade comprada devem ser números positivos.
-• O estoque é atualizado conforme novas compras são registradas.
-• O ano da compra não pode ser superior a 2025.
 
-6. Exemplo de Uso
-   
-Registro de uma nova compra:
+O menu roda em um loop infinito até que o usuário escolha a opção “Sair”.
 
-#### Entrada:
 
-Digite a data da compra (formato AAAA-MM-DD): 2024-03-11  
+5. Como o Código Funciona
 
-Digite o nome do produto: Arroz  
+1. O programa inicia criando um objeto Supermercado.
 
-Digite o valor de compra do produto: 5.50  
+2. O usuário interage com o menu e escolhe uma opção digitando um número.
 
-Digite o valor de venda do produto: 7.00  
+3. Dependendo da escolha, o sistema executa operações como registrar compras, consultar estoque ou realizar vendas.
 
-Digite a quantidade comprada: 100  
+4. As informações são armazenadas e gerenciadas dentro de pilhas para cada produto.
 
-#### Saída:
+5. O usuário pode encerrar o programa a qualquer momento selecionando a opção “Sair”.
 
-Compra registrada com sucesso:  
 
-Data: 2024-03-11  
+# 6. Regras e Validações
 
-Produto: Arroz  
+• Formato de Data: Deve ser AAAA-MM-DD, e o ano não pode ser superior a 2025.
 
-Valor de Compra: R$5.50  
+• Quantidade e Preço: O usuário deve inserir valores numéricos válidos.
 
-Valor de Venda: R$7.00  
+• Controle de Estoque: O sistema impede a venda de mais unidades do que o disponível.
 
-Quantidade Comprada: 100  
+• Ordem LIFO: As consultas de compras mostram primeiro as mais recentes.
 
-Quantidade em Estoque: 100  
 
-Consulta do histórico de um produto:
+# 7. Possíveis Melhorias
 
-#### Entrada:
+• Implementar um banco de dados para persistência dos dados.
 
-Digite o nome do produto para consultar o histórico: Arroz  
+• Melhorar a interface para um sistema gráfico (GUI).
 
-#### Saída:
+• Permitir a atualização automática do valor de venda baseado na média dos preços de compra.
 
-Histórico de compras para 'Arroz' (ordem LIFO):  
 
-Data: 2024-03-11  
+# 8. Conclusão
 
-Produto: Arroz  
 
-Valor de Compra: R$5.50  
-
-Valor de Venda: R$7.00  
-
-Quantidade Comprada: 100  
-
-Quantidade em Estoque: 100  
-
-Limpar o registro de um produto:
-
-#### Entrada:
-
-Digite o nome do produto para limpar o registro: Arroz  
-
-#### Saída:
-
-Registros de compras foram limpos.  
-
-## 6. Conclusão
-
-Este sistema oferece um gerenciamento simples e eficiente de compras para um supermercado, utilizando o conceito de Pilha (LIFO) para organização do histórico de compras. Ele permite registrar novas compras, consultar registros anteriores e limpar dados de forma controlada.
-
-Este código pode ser facilmente expandido para incluir novas funcionalidades, como exportação de dados, geração de relatórios e integração com um banco de dados.
-
+Este sistema fornece um gerenciamento eficiente para supermercados, garantindo um controle organizado das compras e vendas. Ele é simples, funcional e pode ser expandido conforme necessário.
